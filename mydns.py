@@ -71,7 +71,7 @@ class MyDNS:
             self.db.close()
 
     def get_origins(self):
-        """Returns all SOA records"""
+        """Returns all origins"""
         self.dbc.execute("SELECT origin FROM soa ORDER BY origin")
         return self.dbc.fetchall()
 
@@ -365,6 +365,79 @@ class MyDNS:
                     stderr("Error: %s\n" % str(err))
 
 
+def trail_dot(arg):
+    if arg and not arg.endswith('.'):
+        return arg+'.'
+    return arg
+
+def rr_type(option, opt, value, parser):
+    types = []
+    rr_types = [val.strip() for val in value.split(",") if val]
+    for rr_type in rr_types:
+        if not rr_type.upper() in RR_TYPES:
+            raise OptionValueError(
+                    "Invalid %s '%s'.\nMust be one of the following: %s " % (
+                option, rr_type, ", ".join(RR_TYPES)))
+        else:
+            types.append("'%s'" % rr_type)
+    parser.values.type = ",".join(types)
+
+def pad_str(left, string, width=40):
+    left, string = str(left), str(string)
+    str_width = len(left)
+    return string.rjust(width-str_width)
+
+def format_soa(soa):
+    return """%s%s IN SOA %s %s (
+                                        %s\t; serial
+                                        %s%s
+                                        %s%s
+                                        %s%s
+                                        %s%s
+                                        )
+""" % (soa['origin'], pad_str(soa['origin'], soa['ttl']), soa['ns'], soa['mbox'], soa['serial'],
+        soa['refresh'], '\t\t; refresh '+format_time(soa['refresh']),
+        soa['retry'], '\t\t; retry '+format_time(soa['retry']),
+        soa['expire'], '\t\t; expire '+format_time(soa['expire']),
+        soa['minimum'], '\t\t; minimum '+format_time(soa['minimum']))
+
+def format_rr(origin, rrs):
+    out = ""
+    for rr in rrs:
+        if rr['type'] == 'TXT': rr['data'] = '"%s"' % rr['data']
+        if rr['type'] == 'MX': rr['data'] = "%s %s" % (rr['aux'], format_name(origin, rr['data']))
+        name = format_name(origin, rr['name'])
+        out += "%s%s IN %s %s\n" % (
+        name, pad_str(name, rr['ttl']), rr['type'], rr['data'])
+    return out
+
+def format_name(origin, name):
+    if origin in name:
+        return name
+    else:
+        if name:
+            return "%s.%s" % (name, origin)
+        else:
+            return origin
+
+def format_time(seconds, add_s=False):
+    time = []
+    parts = [(' years', 60 * 60 * 24 * 7 * 52),
+		     (' weeks', 60 * 60 * 24 * 7),
+		     (' days', 60 * 60 * 24),
+		     (' hours', 60 * 60),
+		     (' minutes', 60),
+		     (' seconds', 1)]
+    for suffix, length in parts:
+        value = seconds / length
+        if value > 0:
+			seconds = seconds % length
+			time.append('%s%s' % (str(value),
+					       (suffix, (suffix, suffix + 's')[value > 1])[add_s]))
+        if seconds < 1:
+			break
+    return '(%s)' % ' '.join(time)
+
 def parse_args():
     usage = "Usage: %prog <options> <args>\n"
     examples = """
@@ -452,79 +525,6 @@ source of the information should again be consulted. (default %s)''' % RR_TTL)
             fd.close()
 
     return opts, args
-
-def trail_dot(arg):
-    if arg and not arg.endswith('.'):
-        return arg+'.'
-    return arg
-
-def rr_type(option, opt, value, parser):
-    types = []
-    rr_types = [val.strip() for val in value.split(",") if val]
-    for rr_type in rr_types:
-        if not rr_type.upper() in RR_TYPES:
-            raise OptionValueError(
-                    "Invalid %s '%s'.\nMust be one of the following: %s " % (
-                option, rr_type, ", ".join(RR_TYPES)))
-        else:
-            types.append("'%s'" % rr_type)
-    parser.values.type = ",".join(types)
-
-def pad_str(left, string, width=40):
-    left, string = str(left), str(string)
-    str_width = len(left)
-    return string.rjust(width-str_width)
-
-def format_soa(soa):
-    return """%s%s IN SOA %s %s (
-                                        %s\t; serial
-                                        %s%s
-                                        %s%s
-                                        %s%s
-                                        %s%s
-                                        )
-""" % (soa['origin'], pad_str(soa['origin'], soa['ttl']), soa['ns'], soa['mbox'], soa['serial'],
-        soa['refresh'], '\t\t; refresh '+format_time(soa['refresh']),
-        soa['retry'], '\t\t; retry '+format_time(soa['retry']),
-        soa['expire'], '\t\t; expire '+format_time(soa['expire']),
-        soa['minimum'], '\t\t; minimum '+format_time(soa['minimum']))
-
-def format_rr(origin, rrs):
-    out = ""
-    for rr in rrs:
-        if rr['type'] == 'TXT': rr['data'] = '"%s"' % rr['data']
-        if rr['type'] == 'MX': rr['data'] = "%s %s" % (rr['aux'], format_name(origin, rr['data']))
-        name = format_name(origin, rr['name'])
-        out += "%s%s IN %s %s\n" % (
-        name, pad_str(name, rr['ttl']), rr['type'], rr['data'])
-    return out
-
-def format_name(origin, name):
-    if origin in name:
-        return name
-    else:
-        if name:
-            return "%s.%s" % (name, origin)
-        else:
-            return origin
-
-def format_time(seconds, add_s=False):
-    time = []
-    parts = [(' years', 60 * 60 * 24 * 7 * 52),
-		     (' weeks', 60 * 60 * 24 * 7),
-		     (' days', 60 * 60 * 24),
-		     (' hours', 60 * 60),
-		     (' minutes', 60),
-		     (' seconds', 1)]
-    for suffix, length in parts:
-        value = seconds / length
-        if value > 0:
-			seconds = seconds % length
-			time.append('%s%s' % (str(value),
-					       (suffix, (suffix, suffix + 's')[value > 1])[add_s]))
-        if seconds < 1:
-			break
-    return '(%s)' % ' '.join(time)
 
 def main():
     mydns = MyDNS()
