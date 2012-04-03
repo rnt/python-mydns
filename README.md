@@ -1,11 +1,10 @@
 mydns.py
 ========
 
-Author: Milan Nikolic
+Author: Milan Nikolic 
 License: GPL-3
 
-Using
-=====
+### Using
 
     Usage: mydns.py <options> <args>
 

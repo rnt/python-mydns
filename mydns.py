@@ -19,6 +19,7 @@
 import os
 import sys
 import time
+from random import choice
 from textwrap import dedent
 from optparse import OptionParser, OptionValueError
 
@@ -60,6 +61,7 @@ class MyDNS:
             self.dbc = self.db.cursor()
             self.dbd = self.db.cursor(DictCursor)
             self.origin = None
+            self.addresses = []
         except MySQLdb.Error, err:
             self.db = None
             stderr("Error: %s\n" % str(err))
@@ -69,6 +71,20 @@ class MyDNS:
         """Closes MySQL connection"""
         if self.db:
             self.db.close()
+
+    def read_addresses(self, filepath):
+        """Read file with ip addresses"""
+        if not os.path.isfile(filepath) or not os.access(filepath, os.R_OK):
+            stderr("file '%s' not found\n" % filepath)
+            sys.exit(1)
+        try:
+            fd = open(filepath, 'r')
+        except IOError:
+            stderr("couldn't open file '%s'\n" % (filepath))
+            sys.exit(1)
+        else:
+            self.addresses = [line.strip() for line in fd.readlines()]
+            fd.close()
 
     def get_origins(self):
         """Returns all origins"""
@@ -104,9 +120,16 @@ class MyDNS:
                 WHERE table_name='soa' AND table_schema='%s'""" % MYSQL_DB)
         return self.dbc.fetchone()[0]
 
+    def origin_exists(self):
+        """Returns True if origin already exists"""
+        return bool(self.get_soa_id())
 
     def create_soa(self, opts):
         """Creates new SOA record"""
+        if self.origin_exists():
+            stderr("Error: origin '%s' already exists. Skipping...\n" % self.origin)
+            return False
+
         ns = (SOA_NS, opts.ns)[bool(opts.ns)]
         mbox = (SOA_MBOX, opts.mbox)[bool(opts.mbox)]
         serial = self.get_serial()
@@ -160,6 +183,7 @@ class MyDNS:
         return False
 
     def delete_soa(self, opts):
+        """Deletes soa record"""
         zone = self.get_soa_id()
         sql = "DELETE FROM rr WHERE zone = %s" % zone
         if opts.pretend:
@@ -229,7 +253,12 @@ class MyDNS:
                 return False
             else:
                 rrtype = rrtype.strip("'")
-        data = opts.data
+        
+        print rrtype
+        if rrtype == "A":
+            data = choice(self.addresses)
+        else:
+            data = opts.data
         if not data:
             stderr("Error: You must specify the data associated with resource record (--data)\n")
             return False
@@ -288,6 +317,7 @@ class MyDNS:
         return False
 
     def delete_rr(self, opts):
+        """Deletes rr records"""
         zone = self.get_soa_id()
         sql = "DELETE FROM rr WHERE zone = %s " % zone
         if opts.type:
@@ -306,9 +336,17 @@ class MyDNS:
                 stderr("Error: %s\n" % str(err))
 
     def create_bundle(self, opts):
+        """Creates bundle"""
         aux = (RR_AUX, opts.aux)[bool(opts.aux)]
 
-        data = opts.data
+        if self.origin_exists():
+            stderr("Error: origin '%s' already exists. Skipping...\n" % self.origin)
+            return False
+
+        if opts.randomize:
+            data = choice(self.addresses)
+        else:
+            data = opts.data
         if not data:
             stderr("Error: You must specify the data associated with resource record (--data)\n")
             return False
@@ -504,6 +542,8 @@ source of the information should again be consulted. (default %s)''' % RR_TTL)
             help='creates bundle (creates *,mail,www A records and also NS and MX records)')
     parser.add_option('--bundle-ns', action='store', dest='bundle_ns', type='string',
             help='bundle name servers, separated by commas.')
+    parser.add_option('--random-addr', action='store', dest='randomize', type='string',
+            help='file with ip addresses, used with --create-bundle or --create-rr --type A')
     opts, args = parser.parse_args()
 
     if not args and sys.stdin.isatty() and (
@@ -534,6 +574,9 @@ def main():
         for origin in mydns.get_origins():
             stdout("%s\n" % origin)
         sys.exit(0)
+
+    if opts.randomize:
+        mydns.read_addresses(opts.randomize)
 
     for arg in args:
         origin = trail_dot(arg)
