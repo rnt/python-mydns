@@ -60,3 +60,6 @@ License: GPL-3
                             NS and MX records)
       --bundle-ns=BUNDLE_NS
                             bundle name servers, separated by commas.
+      --random-addr=RANDOMIZE
+                              file with ip addresses, used with --create-bundle or --create-rr --type A
+
