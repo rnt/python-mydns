@@ -254,8 +254,7 @@ class MyDNS:
             else:
                 rrtype = rrtype.strip("'")
         
-        print rrtype
-        if rrtype == "A":
+        if opts.randomize and rrtype == "A":
             data = choice(self.addresses)
         else:
             data = opts.data
@@ -402,6 +401,23 @@ class MyDNS:
                 except MySQLdb.Error, err:
                     stderr("Error: %s\n" % str(err))
 
+    def find_rr(self, opts):
+        """Finds records"""
+        sql = """SELECT * FROM rr
+            JOIN soa ON soa.id = rr.zone
+            WHERE soa.active = 'Y' """
+        if not opts.data and not opts.type and not opts.name:
+            stderr("Error: You must specify the search parameters\n")
+            return False
+        if opts.data:
+            sql += "AND rr.data LIKE '%s' " % opts.data
+        if opts.type:
+            sql += "AND rr.type in (%s) " % opts.type
+        if opts.name:
+            sql += "AND rr.name = '%s' " % opts.name
+        self.dbd.execute(sql)
+        return self.dbd.fetchall()
+
 
 def trail_dot(arg):
     if arg and not arg.endswith('.'):
@@ -439,14 +455,13 @@ def format_soa(soa):
         soa['expire'], '\t\t; expire '+format_time(soa['expire']),
         soa['minimum'], '\t\t; minimum '+format_time(soa['minimum']))
 
-def format_rr(origin, rrs):
+def format_rr(origin, rr):
     out = ""
-    for rr in rrs:
-        if rr['type'] == 'TXT': rr['data'] = '"%s"' % rr['data']
-        if rr['type'] == 'MX': rr['data'] = "%s %s" % (rr['aux'], format_name(origin, rr['data']))
-        name = format_name(origin, rr['name'])
-        out += "%s%s IN %s %s\n" % (
-        name, pad_str(name, rr['ttl']), rr['type'], rr['data'])
+    if rr['type'] == 'TXT': rr['data'] = '"%s"' % rr['data']
+    if rr['type'] == 'MX': rr['data'] = "%s %s" % (rr['aux'], format_name(origin, rr['data']))
+    name = format_name(origin, rr['name'])
+    out += "%s%s IN %s %s\n" % (
+    name, pad_str(name, rr['ttl']), rr['type'], rr['data'])
     return out
 
 def format_name(origin, name):
@@ -483,7 +498,8 @@ Examples:
 mydns.py --aux 10 --type A --name www example.com list_of_domains.txt --update
 mydns.py --type A,MX example.com --delete-rr --pretend
 mydns.py --list | grep "^exa" | mydns.py --deactivate
-mydns.py --create-bundle --data 192.168.1.100 --bundle-ns "ns1.example.com,ns2.examplecom" list_of_domains.txt"""
+mydns.py --create-bundle --data 192.168.1.100 --bundle-ns "ns1.example.com,ns2.examplecom" list_of_domains.txt
+mydns.py --find --data '192.168.1.%' --type A"""
     parser = OptionParser(usage=usage+examples)
     parser.add_option('--ns', action='store', dest='ns', type='string',
             help='the name of the name server. (default %s)' % SOA_NS)
@@ -526,6 +542,8 @@ source of the information should again be consulted. (default %s)''' % RR_TTL)
             help='deactivate soa record')
     parser.add_option('--list', action='store_true', dest='list',
             help='list all origins')
+    parser.add_option('--find', action='store_true', dest='find_rr',
+            help='find all records for given parameters, --data, --type and --name')
     parser.add_option('--pretend', action='store_true', dest='pretend',
             help='perform a dry run with no changes made (used with create/update/delete)')
     parser.add_option('--update', action='store_true', dest='update',
@@ -539,7 +557,7 @@ source of the information should again be consulted. (default %s)''' % RR_TTL)
     parser.add_option('--delete-rr', action='store_true', dest='delete_rr',
             help='delete rr records')
     parser.add_option('--create-bundle', action='store_true', dest='create_bundle',
-            help='creates bundle (creates *,mail,www A records and also NS and MX records)')
+            help='creates bundle (creates *,mail and www A records, NS and MX records)')
     parser.add_option('--bundle-ns', action='store', dest='bundle_ns', type='string',
             help='bundle name servers, separated by commas.')
     parser.add_option('--random-addr', action='store', dest='randomize', type='string',
@@ -547,7 +565,7 @@ source of the information should again be consulted. (default %s)''' % RR_TTL)
     opts, args = parser.parse_args()
 
     if not args and sys.stdin.isatty() and (
-        not opts.list):
+        not opts.list) and not opts.find_rr:
         parser.print_help()
         sys.exit(1)
 
@@ -573,6 +591,12 @@ def main():
     if opts.list:
         for origin in mydns.get_origins():
             stdout("%s\n" % origin)
+        sys.exit(0)
+    elif opts.find_rr:
+        rrs = mydns.find_rr(opts)
+        if rrs:
+            for rr in rrs:
+                stdout(format_rr(rr['origin'], rr))
         sys.exit(0)
 
     if opts.randomize:
@@ -616,9 +640,8 @@ def main():
         soa = mydns.get_soa()
         if soa:
             stdout(format_soa(soa))
-        rr = mydns.get_rr(opts)
-        if rr:
-            stdout(format_rr(origin, rr)+"\n")
+        for rr in mydns.get_rr(opts):
+            stdout(format_rr(origin, rr))
 
 if __name__ == '__main__':
     try:

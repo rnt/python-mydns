@@ -13,6 +13,7 @@ License: GPL-3
     mydns.py --type A,MX example.com --delete-rr --pretend
     mydns.py --list | grep "^exa" | mydns.py --deactivate
     mydns.py --create-bundle --data 192.168.1.100 --bundle-ns "ns1.example.com,ns2.examplecom" list_of_domains.txt
+    mydns.py --find --data '192.168.1.%' --type A
 
     Options:
       -h, --help            show this help message and exit
@@ -49,6 +50,7 @@ License: GPL-3
       --activate            activate soa record
       --deactivate          deactivate soa record
       --list                list all origins
+      --find                find all records for given parameters, --data, --type and/or --name
       --pretend             perform a dry run with no changes made (used with
                             create/update/delete)
       --update              update soa and rr records
