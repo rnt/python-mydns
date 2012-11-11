@@ -1,0 +1,227 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: package mydns</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>mydns</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/rcovarru/git/python-mydns/mydns/__init__.py">/home/rcovarru/git/python-mydns/mydns/__init__.py</a></font></td></tr></table>
+    <p><tt>Author:&nbsp;Renato&nbsp;Covarrubias&nbsp;&lt;rnt&nbsp;[at]&nbsp;rnt.cl&gt;<br>
+&nbsp;<br>
+Based&nbsp;on&nbsp;Milan&nbsp;Nikolic&nbsp;&lt;gen2brain@gmail.com&gt;&nbsp;works.<br>
+&nbsp;<br>
+This&nbsp;program&nbsp;is&nbsp;free&nbsp;software:&nbsp;you&nbsp;can&nbsp;redistribute&nbsp;it&nbsp;and/or&nbsp;modify<br>
+it&nbsp;under&nbsp;the&nbsp;terms&nbsp;of&nbsp;the&nbsp;GNU&nbsp;General&nbsp;Public&nbsp;License&nbsp;as&nbsp;published&nbsp;by<br>
+the&nbsp;Free&nbsp;Software&nbsp;Foundation,&nbsp;either&nbsp;version&nbsp;3&nbsp;of&nbsp;the&nbsp;License,&nbsp;or<br>
+(at&nbsp;your&nbsp;option)&nbsp;any&nbsp;later&nbsp;version.<br>
+&nbsp;<br>
+This&nbsp;program&nbsp;is&nbsp;distributed&nbsp;in&nbsp;the&nbsp;hope&nbsp;that&nbsp;it&nbsp;will&nbsp;be&nbsp;useful,<br>
+but&nbsp;WITHOUT&nbsp;ANY&nbsp;WARRANTY;&nbsp;without&nbsp;even&nbsp;the&nbsp;implied&nbsp;warranty&nbsp;of<br>
+MERCHANTABILITY&nbsp;or&nbsp;FITNESS&nbsp;FOR&nbsp;A&nbsp;PARTICULAR&nbsp;PURPOSE.&nbsp;&nbsp;See&nbsp;the<br>
+GNU&nbsp;General&nbsp;Public&nbsp;License&nbsp;for&nbsp;more&nbsp;details.<br>
+&nbsp;<br>
+You&nbsp;should&nbsp;have&nbsp;received&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;GNU&nbsp;General&nbsp;Public&nbsp;License<br>
+along&nbsp;with&nbsp;this&nbsp;program.&nbsp;&nbsp;If&nbsp;not,&nbsp;see&nbsp;&lt;<a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Package Contents</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="mydns.html#mydns">mydns</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="mydns">class <strong>mydns</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Interface&nbsp;to&nbsp;the&nbsp;MyDNS&nbsp;DB<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="mydns-__del__"><strong>__del__</strong></a>(self)</dt><dd><tt>When&nbsp;this&nbsp;object&nbsp;die,&nbsp;closes&nbsp;MySQL&nbsp;connection</tt></dd></dl>
+
+<dl><dt><a name="mydns-__init__"><strong>__init__</strong></a>(self, host, db, user, passwd)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;<a href="#mydns">mydns</a>&nbsp;instance&nbsp;and&nbsp;connects&nbsp;to&nbsp;MySQL&nbsp;server.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+&nbsp;<br>
+NOTE:&nbsp;if&nbsp;passwd&nbsp;is&nbsp;None,&nbsp;we&nbsp;try&nbsp;to&nbsp;connect&nbsp;without&nbsp;password.&nbsp;Although&nbsp;it&nbsp;may&nbsp;seem&nbsp;an&nbsp;idiocy,&nbsp;mysql&nbsp;allows&nbsp;users&nbsp;without&nbsp;password.</tt></dd></dl>
+
+<dl><dt><a name="mydns-create_rr"><strong>create_rr</strong></a>(self, zone, name, data, aux<font color="#909090">=0</font>, ttl<font color="#909090">=3600</font>, rrtype<font color="#909090">='A'</font>)</dt><dd><tt>Creates&nbsp;new&nbsp;RR&nbsp;record<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+&nbsp;<br>
+dns.<a href="#mydns-create_rr">create_rr</a>(dns.<a href="#mydns-get_soa_id">get_soa_id</a>('test.domain.com.'),&nbsp;'foobar',&nbsp;'127.0.0.1')<br>
+dns.<a href="#mydns-create_rr">create_rr</a>(dns.<a href="#mydns-get_soa_id">get_soa_id</a>('test.domain.com.'),&nbsp;'lala',&nbsp;['127.0.0.1',&nbsp;'127.0.0.2'])</tt></dd></dl>
+
+<dl><dt><a name="mydns-create_soa"><strong>create_soa</strong></a>(self, origin, ns, mbox, serial<font color="#909090">=1</font>, refresh<font color="#909090">=900</font>, retry<font color="#909090">=600</font>, expire<font color="#909090">=86400</font>, minimum<font color="#909090">=300</font>, ttl<font color="#909090">=3600</font>, xfer<font color="#909090">=None</font>, active<font color="#909090">='Y'</font>)</dt><dd><tt>Creates&nbsp;new&nbsp;SOA&nbsp;record<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+dns.<a href="#mydns-create_soa">create_soa</a>('test1.domain.com.',&nbsp;'ns1.domain.com.',&nbsp;'dns-admin.domain.com.')<br>
+&nbsp;<br>
+NOTE:&nbsp;'xfer'&nbsp;and&nbsp;'active'&nbsp;arguments&nbsp;are&nbsp;only&nbsp;used&nbsp;if&nbsp;the&nbsp;columns&nbsp;exists.</tt></dd></dl>
+
+<dl><dt><a name="mydns-delete_rr"><strong>delete_rr</strong></a>(self, rrid<font color="#909090">=None</font>, zone<font color="#909090">=None</font>, name<font color="#909090">=None</font>, data<font color="#909090">=None</font>, aux<font color="#909090">=None</font>, ttl<font color="#909090">=None</font>, rrtype<font color="#909090">=None</font>)</dt><dd><tt>Deletes&nbsp;rr&nbsp;records<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+&nbsp;<br>
+#&nbsp;Delete&nbsp;all&nbsp;register&nbsp;from&nbsp;domain&nbsp;test.domain.com<br>
+dns.<a href="#mydns-delete_rr">delete_rr</a>(zone=dns.<a href="#mydns-get_soa_id">get_soa_id</a>('test.domain.com.'))<br>
+&nbsp;<br>
+#&nbsp;Delete&nbsp;register&nbsp;with&nbsp;name&nbsp;start&nbsp;with&nbsp;'dns'<br>
+dns.<a href="#mydns-delete_rr">delete_rr</a>(name='dns%')<br>
+&nbsp;<br>
+#&nbsp;Delete&nbsp;all&nbsp;register&nbsp;with&nbsp;type&nbsp;'A'&nbsp;or&nbsp;'AAAA'.<br>
+dns.<a href="#mydns-delete_rr">delete_rr</a>(rrtype=['A',&nbsp;'AAAA'])<br>
+&nbsp;<br>
+#&nbsp;Delete&nbsp;register&nbsp;from&nbsp;zone=1&nbsp;and&nbsp;type&nbsp;'A'<br>
+dns.<a href="#mydns-delete_rr">delete_rr</a>(zone=1,&nbsp;rrtype='A')<br>
+&nbsp;<br>
+#&nbsp;Delete&nbsp;register&nbsp;with&nbsp;id&nbsp;42<br>
+dns.<a href="#mydns-delete_rr">delete_rr</a>(rrid=42)</tt></dd></dl>
+
+<dl><dt><a name="mydns-delete_soa"><strong>delete_soa</strong></a>(self, id_origin)</dt><dd><tt>Deletes&nbsp;soa&nbsp;record<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+dns.<a href="#mydns-delete_soa">delete_soa</a>(dns.<a href="#mydns-get_soa_id">get_soa_id</a>('test.domain.com.'))<br>
+dns.<a href="#mydns-delete_soa">delete_soa</a>(1)</tt></dd></dl>
+
+<dl><dt><a name="mydns-disable_soa"><strong>disable_soa</strong></a>(self, origin)</dt><dd><tt>Disable&nbsp;SOA,&nbsp;see&nbsp;_set_active_soa()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+dns.<a href="#mydns-disable_soa">disable_soa</a>('test.domain.com.')</tt></dd></dl>
+
+<dl><dt><a name="mydns-enable_soa"><strong>enable_soa</strong></a>(self, origin)</dt><dd><tt>Enable&nbsp;SOA,&nbsp;see&nbsp;_set_active_soa()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+dns.<a href="#mydns-enable_soa">enable_soa</a>('test.domain.com.')</tt></dd></dl>
+
+<dl><dt><a name="mydns-get_new_serial"><strong>get_new_serial</strong></a>(self, id_origin, force_increment<font color="#909090">=False</font>, force_date_increment<font color="#909090">=False</font>)</dt><dd><tt>Returns&nbsp;new&nbsp;serial&nbsp;number<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+new_serial&nbsp;=&nbsp;dns.<a href="#mydns-get_new_serial">get_new_serial</a>(1)<br>
+new_serial&nbsp;=&nbsp;dns.<a href="#mydns-get_new_serial">get_new_serial</a>(dns.<a href="#mydns-get_soa_id">get_soa_id</a>('test.domain.com.'),&nbsp;force_increment=True)<br>
+&nbsp;<br>
+NOTE&nbsp;1:&nbsp;If&nbsp;the&nbsp;serial&nbsp;started&nbsp;in&nbsp;1,&nbsp;after&nbsp;upgrade&nbsp;1,970,010,100&nbsp;may&nbsp;want&nbsp;to&nbsp;continue&nbsp;using&nbsp;increments&nbsp;of&nbsp;1.&nbsp;That's&nbsp;what&nbsp;the&nbsp;argument&nbsp;force_increment&nbsp;exists.&nbsp;:P&nbsp;crazy&nbsp;ah?<br>
+NOTE&nbsp;2:&nbsp;If&nbsp;you&nbsp;want&nbsp;to&nbsp;pass&nbsp;from&nbsp;serial&nbsp;&lt;&nbsp;1,970,010,100&nbsp;to&nbsp;using&nbsp;serial&nbsp;from&nbsp;date,&nbsp;set&nbsp;force_date_increment=True&nbsp;;)</tt></dd></dl>
+
+<dl><dt><a name="mydns-get_next_soa_id"><strong>get_next_soa_id</strong></a>(self)</dt><dd><tt>Returns&nbsp;next&nbsp;SOA&nbsp;id<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a><br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+next_soa_id&nbsp;=&nbsp;dns.<a href="#mydns-get_next_soa_id">get_next_soa_id</a>()</tt></dd></dl>
+
+<dl><dt><a name="mydns-get_origins"><strong>get_origins</strong></a>(self)</dt><dd><tt>Returns&nbsp;all&nbsp;origins<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a><br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+origins&nbsp;=&nbsp;dns.<a href="#mydns-get_origins">get_origins</a>()</tt></dd></dl>
+
+<dl><dt><a name="mydns-get_rr"><strong>get_rr</strong></a>(self, rrid<font color="#909090">=None</font>, zone<font color="#909090">=None</font>, name<font color="#909090">=None</font>, data<font color="#909090">=None</font>, aux<font color="#909090">=None</font>, ttl<font color="#909090">=None</font>, rrtype<font color="#909090">=None</font>)</dt><dd><tt>Returns&nbsp;data&nbsp;from&nbsp;RR&nbsp;table<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+&nbsp;<br>
+#&nbsp;Search&nbsp;all&nbsp;register&nbsp;from&nbsp;domain&nbsp;test.domain.com<br>
+dns.<a href="#mydns-get_rr">get_rr</a>(zone=dns.<a href="#mydns-get_soa_id">get_soa_id</a>('test.domain.com.'))<br>
+&nbsp;<br>
+#&nbsp;Search&nbsp;register&nbsp;with&nbsp;name&nbsp;start&nbsp;with&nbsp;'dns'<br>
+dns.<a href="#mydns-get_rr">get_rr</a>(name='dns%')<br>
+&nbsp;<br>
+#&nbsp;Search&nbsp;register&nbsp;with&nbsp;type&nbsp;'A'&nbsp;or&nbsp;'AAAA'.<br>
+dns.<a href="#mydns-get_rr">get_rr</a>(rrtype=['A',&nbsp;'AAAA'])<br>
+&nbsp;<br>
+#&nbsp;Search&nbsp;regiter&nbsp;from&nbsp;zone=1&nbsp;and&nbsp;type&nbsp;'A'<br>
+dns.<a href="#mydns-get_rr">get_rr</a>(zone=1,&nbsp;rrtype='A')</tt></dd></dl>
+
+<dl><dt><a name="mydns-get_serial"><strong>get_serial</strong></a>(self, id_origin)</dt><dd><tt>Get&nbsp;the&nbsp;origin&nbsp;serial&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+serial&nbsp;=&nbsp;dns.<a href="#mydns-get_serial">get_serial</a>(1)<br>
+serial&nbsp;=&nbsp;dns.<a href="#mydns-get_serial">get_serial</a>(dns.<a href="#mydns-get_soa_id">get_soa_id</a>('test.domain.com.'))</tt></dd></dl>
+
+<dl><dt><a name="mydns-get_soa"><strong>get_soa</strong></a>(self, id_origin)</dt><dd><tt>Returns&nbsp;SOA&nbsp;record<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a><br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+origin&nbsp;=&nbsp;dns.<a href="#mydns-get_soa">get_soa</a>(dns.<a href="#mydns-get_soa_id">get_soa_id</a>('test.domain.com.'))<br>
+origin&nbsp;=&nbsp;dns.<a href="#mydns-get_soa">get_soa</a>(1)</tt></dd></dl>
+
+<dl><dt><a name="mydns-get_soa_id"><strong>get_soa_id</strong></a>(self, origin)</dt><dd><tt>Returns&nbsp;SOA&nbsp;id<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a><br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+soa_id&nbsp;=&nbsp;dns.<a href="#mydns-get_soa_id">get_soa_id</a>('test.domain.com.')</tt></dd></dl>
+
+<dl><dt><a name="mydns-origin_exists"><strong>origin_exists</strong></a>(self, origin)</dt><dd><tt>Returns&nbsp;True&nbsp;if&nbsp;origin&nbsp;already&nbsp;exists<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a><br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+if&nbsp;dns.<a href="#mydns-origin_exists">origin_exists</a>('test.domain.com.'):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"test.domain.com&nbsp;exists&nbsp;:)"<br>
+else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"test.domain.com&nbsp;not&nbsp;exists&nbsp;:('"</tt></dd></dl>
+
+<dl><dt><a name="mydns-update_rr"><strong>update_rr</strong></a>(self, rrid, zone<font color="#909090">=None</font>, name<font color="#909090">=None</font>, data<font color="#909090">=None</font>, aux<font color="#909090">=None</font>, ttl<font color="#909090">=None</font>, rrtype<font color="#909090">=None</font>)</dt><dd><tt>Updates&nbsp;records&nbsp;in&nbsp;RR&nbsp;table<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+&nbsp;<br>
+In&nbsp;[1]:&nbsp;dns.<a href="#mydns-get_rr">get_rr</a>(4)[0]['id']<br>
+Out[1]:&nbsp;4L<br>
+&nbsp;<br>
+In&nbsp;[2]:&nbsp;dns.<a href="#mydns-update_rr">update_rr</a>(4,&nbsp;data='10.80.12.50')<br>
+Out[2]:&nbsp;True</tt></dd></dl>
+
+<dl><dt><a name="mydns-update_serial"><strong>update_serial</strong></a>(self, id_origin, force_increment<font color="#909090">=False</font>, force_date_increment<font color="#909090">=False</font>)</dt><dd><tt>Updates&nbsp;serial&nbsp;number&nbsp;in&nbsp;SOA&nbsp;table<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+dns.<a href="#mydns-update_serial">update_serial</a>(1)<br>
+dns.<a href="#mydns-update_serial">update_serial</a>(1,&nbsp;force_increment=True,&nbsp;force_date_increment=False)<br>
+&nbsp;<br>
+NOTE:&nbsp;For&nbsp;an&nbsp;explanation&nbsp;of&nbsp;the&nbsp;attribute&nbsp;force_increment&nbsp;or&nbsp;force_date_increment,&nbsp;please&nbsp;see&nbsp;<a href="#mydns-get_new_serial">get_new_serial</a>()</tt></dd></dl>
+
+<dl><dt><a name="mydns-update_soa"><strong>update_soa</strong></a>(self, id_origin, origin<font color="#909090">=None</font>, ns<font color="#909090">=None</font>, mbox<font color="#909090">=None</font>, serial<font color="#909090">=None</font>, refresh<font color="#909090">=None</font>, retry<font color="#909090">=None</font>, expire<font color="#909090">=None</font>, minimum<font color="#909090">=None</font>, force_increment<font color="#909090">=False</font>, force_date_increment<font color="#909090">=False</font>, ttl<font color="#909090">=None</font>, xfer<font color="#909090">=None</font>, active<font color="#909090">='Y'</font>)</dt><dd><tt>Updates&nbsp;record&nbsp;in&nbsp;SOA&nbsp;table<br>
+&nbsp;<br>
+import&nbsp;<a href="#mydns">mydns</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+dns&nbsp;=&nbsp;<a href="#mydns">mydns</a>.<a href="#mydns">mydns</a>(host='localhost',&nbsp;db='<a href="#mydns">mydns</a>',&nbsp;user='username',&nbsp;passwd='password')<br>
+dns.<a href="#mydns-update_soa">update_soa</a>(dns.<a href="#mydns-get_soa_id">get_soa_id</a>('test.domain.com.'),&nbsp;origin='foobar.domain.com.')<br>
+&nbsp;<br>
+NOTE:&nbsp;'xfer'&nbsp;and&nbsp;'active'&nbsp;arguments&nbsp;are&nbsp;only&nbsp;used&nbsp;if&nbsp;the&nbsp;columns&nbsp;exists.</tt></dd></dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-stderr"><strong>stderr</strong></a> = write(...)</dt><dd><tt>write(str)&nbsp;-&gt;&nbsp;None.&nbsp;&nbsp;Write&nbsp;string&nbsp;str&nbsp;to&nbsp;file.<br>
+&nbsp;<br>
+Note&nbsp;that&nbsp;due&nbsp;to&nbsp;buffering,&nbsp;flush()&nbsp;or&nbsp;close()&nbsp;may&nbsp;be&nbsp;needed&nbsp;before<br>
+the&nbsp;file&nbsp;on&nbsp;disk&nbsp;reflects&nbsp;the&nbsp;data&nbsp;written.</tt></dd></dl>
+</td></tr></table>
+</body></html>
