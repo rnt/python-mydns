@@ -1,222 +1,228 @@
-                                                                              
-                                                                        index 
-   mydns                    /home/rcovarru/git/python-mydns/mydns/__init__.py
+Help on package mydns:
 
-   Author: Renato Covarrubias <rnt [at] rnt.cl>
-    
-   Based on Milan Nikolic <gen2brain@gmail.com> works.
-    
-   This program is free software: you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-    
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-    
-   You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+NAME
+    mydns - Author: Renato Covarrubias <rnt [at] rnt.cl>
 
-            
-   Package Contents
-               
+FILE
+    /home/rcovarru/git/python-mydns/mydns/__init__.py
 
-       
-Classes
-         mydns                                                                                                                                                                              
-                                                                                                                                                                                            
-                                                                                                                                                                                            
-         class mydns                                                                                                                                                                        
-             Interface to the MyDNS DB                                                                                                                                                      
-                                                                                                                                                                                            
-               Methods defined here:                                                                                                                                                        
-                                                                                                                                                                                            
-               __del__(self)                                                                                                                                                                
-                  When this object die, closes MySQL connection                                                                                                                             
-                                                                                                                                                                                            
-               __init__(self, host, db, user, passwd)                                                                                                                                       
-                  Create a new mydns instance and connects to MySQL server.                                                                                                                 
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                                                                                                                                                                                            
-                  NOTE: if passwd is None, we try to connect without password. Although it may seem an idiocy, mysql allows users without password.                                         
-                                                                                                                                                                                            
-               create_rr(self, zone, name, data, aux=0, ttl=3600, rrtype='A')                                                                                                               
-                  Creates new RR record                                                                                                                                                     
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                                                                                                                                                                                            
-                  dns.create_rr(dns.get_soa_id('test.domain.com.'), 'foobar', '127.0.0.1')                                                                                                  
-                  dns.create_rr(dns.get_soa_id('test.domain.com.'), 'lala', ['127.0.0.1', '127.0.0.2'])                                                                                     
-                                                                                                                                                                                            
-               create_soa(self, origin, ns, mbox, serial=1, refresh=900, retry=600, expire=86400, minimum=300, ttl=3600, xfer=None, active='Y')                                             
-                  Creates new SOA record                                                                                                                                                    
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                  dns.create_soa('test1.domain.com.', 'ns1.domain.com.', 'dns-admin.domain.com.')                                                                                           
-                                                                                                                                                                                            
-                  NOTE: 'xfer' and 'active' arguments are only used if the columns exists.                                                                                                  
-                                                                                                                                                                                            
-               delete_rr(self, rrid=None, zone=None, name=None, data=None, aux=None, ttl=None, rrtype=None)                                                                                 
-                  Deletes rr records                                                                                                                                                        
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                                                                                                                                                                                            
-                  # Delete all register from domain test.domain.com                                                                                                                         
-                  dns.delete_rr(zone=dns.get_soa_id('test.domain.com.'))                                                                                                                    
-                                                                                                                                                                                            
-                  # Delete register with name start with 'dns'                                                                                                                              
-                  dns.delete_rr(name='dns%')                                                                                                                                                
-                                                                                                                                                                                            
-                  # Delete all register with type 'A' or 'AAAA'.                                                                                                                            
-                  dns.delete_rr(rrtype=['A', 'AAAA'])                                                                                                                                       
-                                                                                                                                                                                            
-                  # Delete register from zone=1 and type 'A'                                                                                                                                
-                  dns.delete_rr(zone=1, rrtype='A')                                                                                                                                         
-                                                                                                                                                                                            
-                  # Delete register with id 42                                                                                                                                              
-                  dns.delete_rr(rrid=42)                                                                                                                                                    
-                                                                                                                                                                                            
-               delete_soa(self, id_origin)                                                                                                                                                  
-                  Deletes soa record                                                                                                                                                        
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                  dns.delete_soa(dns.get_soa_id('test.domain.com.'))                                                                                                                        
-                  dns.delete_soa(1)                                                                                                                                                         
-                                                                                                                                                                                            
-               disable_soa(self, origin)                                                                                                                                                    
-                  Disable SOA, see _set_active_soa()                                                                                                                                        
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                  dns.disable_soa('test.domain.com.')                                                                                                                                       
-                                                                                                                                                                                            
-               enable_soa(self, origin)                                                                                                                                                     
-                  Enable SOA, see _set_active_soa()                                                                                                                                         
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                  dns.enable_soa('test.domain.com.')                                                                                                                                        
-                                                                                                                                                                                            
-               get_new_serial(self, id_origin, force_increment=False, force_date_increment=False)                                                                                           
-                  Returns new serial number                                                                                                                                                 
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                  new_serial = dns.get_new_serial(1)                                                                                                                                        
-                  new_serial = dns.get_new_serial(dns.get_soa_id('test.domain.com.'), force_increment=True)                                                                                 
-                                                                                                                                                                                            
-                  NOTE 1: If the serial started in 1, after upgrade 1,970,010,100 may want to continue using increments of 1. That's what the argument force_increment exists. :P crazy ah? 
-                  NOTE 2: If you want to pass from serial < 1,970,010,100 to using serial from date, set force_date_increment=True ;)                                                       
-                                                                                                                                                                                            
-               get_next_soa_id(self)                                                                                                                                                        
-                  Returns next SOA id                                                                                                                                                       
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                  next_soa_id = dns.get_next_soa_id()                                                                                                                                       
-                                                                                                                                                                                            
-               get_origins(self)                                                                                                                                                            
-                  Returns all origins                                                                                                                                                       
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                  origins = dns.get_origins()                                                                                                                                               
-                                                                                                                                                                                            
-               get_rr(self, rrid=None, zone=None, name=None, data=None, aux=None, ttl=None, rrtype=None)                                                                                    
-                  Returns data from RR table                                                                                                                                                
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                                                                                                                                                                                            
-                  # Search all register from domain test.domain.com                                                                                                                         
-                  dns.get_rr(zone=dns.get_soa_id('test.domain.com.'))                                                                                                                       
-                                                                                                                                                                                            
-                  # Search register with name start with 'dns'                                                                                                                              
-                  dns.get_rr(name='dns%')                                                                                                                                                   
-                                                                                                                                                                                            
-                  # Search register with type 'A' or 'AAAA'.                                                                                                                                
-                  dns.get_rr(rrtype=['A', 'AAAA'])                                                                                                                                          
-                                                                                                                                                                                            
-                  # Search regiter from zone=1 and type 'A'                                                                                                                                 
-                  dns.get_rr(zone=1, rrtype='A')                                                                                                                                            
-                                                                                                                                                                                            
-               get_serial(self, id_origin)                                                                                                                                                  
-                  Get the origin serial                                                                                                                                                     
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                  serial = dns.get_serial(1)                                                                                                                                                
-                  serial = dns.get_serial(dns.get_soa_id('test.domain.com.'))                                                                                                               
-                                                                                                                                                                                            
-               get_soa(self, id_origin)                                                                                                                                                     
-                  Returns SOA record                                                                                                                                                        
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                  origin = dns.get_soa(dns.get_soa_id('test.domain.com.'))                                                                                                                  
-                  origin = dns.get_soa(1)                                                                                                                                                   
-                                                                                                                                                                                            
-               get_soa_id(self, origin)                                                                                                                                                     
-                  Returns SOA id                                                                                                                                                            
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                  soa_id = dns.get_soa_id('test.domain.com.')                                                                                                                               
-                                                                                                                                                                                            
-               origin_exists(self, origin)                                                                                                                                                  
-                  Returns True if origin already exists                                                                                                                                     
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                  if dns.origin_exists('test.domain.com.'):                                                                                                                                 
-                      print "test.domain.com exists :)"                                                                                                                                     
-                  else:                                                                                                                                                                     
-                      print "test.domain.com not exists :('"                                                                                                                                
-                                                                                                                                                                                            
-               update_rr(self, rrid, zone=None, name=None, data=None, aux=None, ttl=None, rrtype=None)                                                                                      
-                  Updates records in RR table                                                                                                                                               
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                                                                                                                                                                                            
-                  In [1]: dns.get_rr(4)[0]['id']                                                                                                                                            
-                  Out[1]: 4L                                                                                                                                                                
-                                                                                                                                                                                            
-                  In [2]: dns.update_rr(4, data='10.80.12.50')                                                                                                                              
-                  Out[2]: True                                                                                                                                                              
-                                                                                                                                                                                            
-               update_serial(self, id_origin, force_increment=False, force_date_increment=False)                                                                                            
-                  Updates serial number in SOA table                                                                                                                                        
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                  dns.update_serial(1)                                                                                                                                                      
-                  dns.update_serial(1, force_increment=True, force_date_increment=False)                                                                                                    
-                                                                                                                                                                                            
-                  NOTE: For an explanation of the attribute force_increment or force_date_increment, please see get_new_serial()                                                            
-                                                                                                                                                                                            
-               update_soa(self, id_origin, origin=None, ns=None, mbox=None, serial=None, refresh=None, retry=None, expire=None, minimum=None, force_increment=False,                        
-               force_date_increment=False, ttl=None, xfer=None, active='Y')                                                                                                                 
-                  Updates record in SOA table                                                                                                                                               
-                                                                                                                                                                                            
-                  import mydns                                                                                                                                                              
-                  dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')                                                                                       
-                  dns.update_soa(dns.get_soa_id('test.domain.com.'), origin='foobar.domain.com.')                                                                                           
-                                                                                                                                                                                            
-                  NOTE: 'xfer' and 'active' arguments are only used if the columns exists.                                                                                                  
+DESCRIPTION
+    Based on Milan Nikolic <gen2brain [at] gmail.com> works.
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+PACKAGE CONTENTS
+
+
+CLASSES
+    mydns
+    
+    class mydns
+     |  Interface to the MyDNS DB
+     |  
+     |  Methods defined here:
+     |  
+     |  __del__(self)
+     |      When this object die, closes MySQL connection
+     |  
+     |  __init__(self, host, db, user, passwd)
+     |      Create a new mydns instance and connects to MySQL server.
+     |                      
+     |      import mydns        
+     |      dns = mydns.mydns(
+     |                      host='localhost',
+     |                      db='mydns',
+     |                      user='username',
+     |                      passwd='password')
+     |      
+     |      NOTE:
+     |              If passwd is None, we try to connect without password.
+     |              Perhaps it seems idiotic, but mysql allows users without password.
+     |  
+     |  create_rr(self, zone, name, data, aux=0, ttl=3600, rrtype='A')
+     |      Creates new RR record
+     |      
+     |      import mydns        
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      
+     |      dns.create_rr(dns.get_soa_id('test.domain.com.'), 'foobar', '127.0.0.1')
+     |      dns.create_rr(dns.get_soa_id('test.domain.com.'), 'lala', ['127.0.0.1', '127.0.0.2'])
+     |  
+     |  create_soa(self, origin, ns, mbox, serial=1, refresh=900, retry=600, expire=86400, minimum=300, ttl=3600, xfer=None, active='Y')
+     |      Creates new SOA record
+     |      
+     |      import mydns
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      dns.create_soa('test1.domain.com.', 'ns1.domain.com.', 'dns-admin.domain.com.')
+     |      
+     |      NOTE: 'xfer' and 'active' arguments are only used if the columns exists.
+     |  
+     |  delete_rr(self, rrid=None, zone=None, name=None, data=None, aux=None, ttl=None, rrtype=None)
+     |      Deletes rr records
+     |      
+     |      import mydns        
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      
+     |      # Delete all register from domain test.domain.com
+     |      dns.delete_rr(zone=dns.get_soa_id('test.domain.com.'))
+     |      
+     |      # Delete register with name start with 'dns'
+     |      dns.delete_rr(name='dns%')
+     |      
+     |      # Delete all register with type 'A' or 'AAAA'.
+     |      dns.delete_rr(rrtype=['A', 'AAAA'])
+     |      
+     |      # Delete register from zone=1 and type 'A'
+     |      dns.delete_rr(zone=1, rrtype='A')
+     |      
+     |      # Delete register with id 42
+     |      dns.delete_rr(rrid=42)
+     |  
+     |  delete_soa(self, id_origin)
+     |      Deletes soa record
+     |      
+     |      import mydns        
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      dns.delete_soa(dns.get_soa_id('test.domain.com.'))
+     |      dns.delete_soa(1)
+     |  
+     |  disable_soa(self, origin)
+     |      Disable SOA, see self._set_active_soa()
+     |                      
+     |      import mydns        
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      dns.disable_soa('test.domain.com.')
+     |  
+     |  enable_soa(self, origin)
+     |      Enable SOA, see self._set_active_soa()
+     |                      
+     |      import mydns        
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      dns.enable_soa('test.domain.com.')
+     |  
+     |  get_new_serial(self, id_origin, force_increment=False, force_date_increment=False)
+     |      Returns new serial number
+     |      
+     |      import mydns        
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      new_serial = dns.get_new_serial(1)
+     |      new_serial = dns.get_new_serial(dns.get_soa_id('test.domain.com.'), force_increment=True)
+     |      
+     |      NOTE 1: If the serial started in 1, after upgrade 1,970,010,100 may want to continue using increments of 1. That's what the argument force_increment exists. :P crazy ah?
+     |      NOTE 2: If you want to pass from serial < 1,970,010,100 to using serial from date, set force_date_increment=True ;)
+     |  
+     |  get_next_soa_id(self)
+     |      Returns next SOA id
+     |      
+     |      import mydns
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      next_soa_id = dns.get_next_soa_id()
+     |  
+     |  get_origins(self)
+     |      Returns all origins
+     |      
+     |      import mydns
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      origins = dns.get_origins()
+     |  
+     |  get_rr(self, rrid=None, zone=None, name=None, data=None, aux=None, ttl=None, rrtype=None)
+     |      Returns data from RR table
+     |      
+     |      import mydns        
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      
+     |      # Search all register from domain test.domain.com
+     |      dns.get_rr(zone=dns.get_soa_id('test.domain.com.'))
+     |      
+     |      # Search register with name start with 'dns'
+     |      dns.get_rr(name='dns%')
+     |      
+     |      # Search register with type 'A' or 'AAAA'.
+     |      dns.get_rr(rrtype=['A', 'AAAA'])
+     |      
+     |      # Search regiter from zone=1 and type 'A'
+     |      dns.get_rr(zone=1, rrtype='A')
+     |  
+     |  get_serial(self, id_origin)
+     |      Get the origin serial        
+     |      
+     |      import mydns        
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      serial = dns.get_serial(1)
+     |      serial = dns.get_serial(dns.get_soa_id('test.domain.com.'))
+     |  
+     |  get_soa(self, id_origin)
+     |      Returns SOA record
+     |      
+     |      import mydns
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      origin = dns.get_soa(dns.get_soa_id('test.domain.com.'))
+     |      origin = dns.get_soa(1)
+     |  
+     |  get_soa_id(self, origin)
+     |      Returns SOA id
+     |      
+     |      import mydns
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      soa_id = dns.get_soa_id('test.domain.com.')
+     |  
+     |  origin_exists(self, origin)
+     |      Returns True if origin already exists
+     |      
+     |      import mydns
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      if dns.origin_exists('test.domain.com.'):
+     |              print "test.domain.com exists :)"
+     |      else:
+     |              print "test.domain.com not exists :('"
+     |  
+     |  update_rr(self, rrid, zone=None, name=None, data=None, aux=None, ttl=None, rrtype=None)
+     |      Updates records in RR table
+     |      
+     |      import mydns        
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      
+     |      In [1]: dns.get_rr(4)[0]['id']
+     |      Out[1]: 4L
+     |      
+     |      In [2]: dns.update_rr(4, data='10.80.12.50')
+     |      Out[2]: True
+     |  
+     |  update_serial(self, id_origin, force_increment=False, force_date_increment=False)
+     |      Updates serial number in SOA table
+     |      
+     |      import mydns        
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      dns.update_serial(1)
+     |      dns.update_serial(1, force_increment=True, force_date_increment=False)
+     |      
+     |      NOTE: For an explanation of the attribute force_increment or force_date_increment, please see self.get_new_serial()
+     |  
+     |  update_soa(self, id_origin, origin=None, ns=None, mbox=None, serial=None, refresh=None, retry=None, expire=None, minimum=None, force_increment=False, force_date_increment=False, ttl=None, xfer=None, active='Y')
+     |      Updates record in SOA table
+     |      
+     |      import mydns        
+     |      dns = mydns.mydns(host='localhost', db='mydns', user='username', passwd='password')
+     |      dns.update_soa(dns.get_soa_id('test.domain.com.'), origin='foobar.domain.com.')
+     |      
+     |      NOTE: 'xfer' and 'active' arguments are only used if the columns exists.
+
+FUNCTIONS
+    stderr = write(...)
+        write(str) -> None.  Write string str to file.
         
- Functions
-          stderr = write(...)                                                    
-             write(str) -> None.  Write string str to file.                      
-                                                                                 
-             Note that due to buffering, flush() or close() may be needed before 
-             the file on disk reflects the data written.                         
+        Note that due to buffering, flush() or close() may be needed before
+        the file on disk reflects the data written.
+
+
