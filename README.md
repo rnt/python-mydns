@@ -20,4 +20,4 @@ Based on Milan Nikolic works. This is only a library, not a script.
   
 ### Packaging
 
-  In http://repo.rnt.cl you will find this RPM for Fedora 17.
+  In http://repo.rnt.cl you will find this RPM for Fedora 18.
