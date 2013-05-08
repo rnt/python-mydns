@@ -8,7 +8,7 @@ if sys.version_info >= (3,):
 
 setup(
     name='python-mydns',
-    version='1.0',
+    version='1.0.1',
     description="A library to connect to mydns mysql database and manage them.",
     author='Renato Covarrubias',
     author_email='rnt [at] rnt.cl]',
